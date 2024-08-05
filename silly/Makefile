@@ -1,10 +1,10 @@
-VCS := vcs
+COMPILER := verilator
 
 FILELIST = filelist_silly 
 SIMV = silly
 SRC = sillyfunction.sv \
       sillyfunction_bench.sv
-OPTS = -sverilog -full64 -Mupdate -f $(FILELIST) -o $(SIMV)
+OPTS = -cc --timing --build --main --exe $(SRC) -o $(SIMV)
 
 .PHONY: all
 all: run
@@ -14,11 +14,11 @@ compile: $(SIMV)
 
 .PHONY: run
 run: $(SIMV)
-	./$(SIMV)
+	./obj_dir/$(SIMV)
 
 $(SIMV): $(SRC)
-	$(VCS) $(OPTS)
+	$(COMPILER) $(OPTS)
 
 .PHONY: clean
 clean:
-	rm -rf *.daidir *.key csrc $(SIMV)
+	rm -rf obj_dir

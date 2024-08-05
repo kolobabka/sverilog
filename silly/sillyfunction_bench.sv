@@ -10,37 +10,34 @@ module silllyfunction_bench();
   // clock for bench
   always
     begin
-      clk = 1; #5; clk = 0; #5;
+      clk = 0; #5; clk = 1; #5;
     end
 
   initial
     begin
       $readmemb("sillyvectors.txt", testvectors);
       vn = 0;
-      reset = 1; #22; reset = 0;
     end
 
   // on posedge load test vector and wires
   always @(posedge clk)
     begin
-      #1;
       {a, b, c, yeta} = testvectors[vn];
     end
 
   // on negedge check results
   always @(negedge clk)
-    if (~reset) begin
+    begin
       if (y !== yeta) begin
-        $display("Test failed %b: %b, expected %b", {a, b, c}, y, yeta);
+        $display("vn = %d, test failed %b: %b, expected %b", vn, {a, b, c}, y, yeta);
         $finish;
       end
-      vn = vn + 1;
 
-      // xxxx marks end of file
-      if (testvectors[vn] === 4'bx) begin
+      if (testvectors[vn] === 4'b1110) begin
         $display("All %d tests passed!", vn);
         $finish;
       end
+      vn = vn + 1;
     end
 
 endmodule
