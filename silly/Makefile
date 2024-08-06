@@ -3,6 +3,7 @@ COMPILER := verilator
 FILELIST = filelist_silly 
 SIMV = silly
 SRC = sillyfunction.sv \
+      xorfour.sv \
       sillyfunction_bench.sv
 OPTS = -cc --timing --build --main --exe $(SRC) -o $(SIMV)
 
