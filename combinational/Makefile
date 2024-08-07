@@ -4,9 +4,11 @@ FILELIST = filelist_silly
 SIMV = silly
 SRC = sillyfunction.sv \
       xorfour.sv \
-      sillyfunction_bench.sv
+      gates.sv \
+      comb_testbench.sv
 VECTORS = sillyvectors.txt \
-          xor4vectors.txt 
+          xor4vectors.txt \
+          gatevectors.txt
 GSRC = genvectors.cc \
        alltuples.hpp
 GEN = vgen
