@@ -1,10 +1,31 @@
+//-----------------------------------------------------------------------------
+//
+// Combinatorial logic testbench
+//
+// top module: comb_testbench
+//
+//-----------------------------------------------------------------------------
+
+// the only way I found to make generic function
+// is to make generic module and function inside it
+module util#(parameter int W = 3)();
+  // check function for tests
+  function void check(integer vn, logic [W:0] y, logic [W:0] yeta);
+    if (y !== yeta) begin
+      $display("vn = %d, test failed: %b, expected %b", vn, y, yeta);
+      $finish;
+    end
+  endfunction
+endmodule
+
 // first approach to testbench: repeat with #10 wait
 module silllyfunction_check();
   logic a, b, c, y, yeta;
   logic [3:0] testvectors[7:0];
   integer vn;
 
-  sillyfunction dut(a, b, c, y);
+  sillyfunction dut(a, b, c, y);  
+  util#(0) u();
 
   initial
     begin
@@ -13,10 +34,7 @@ module silllyfunction_check();
       repeat(8) begin
         {a, b, c, yeta} = testvectors[vn];
         #10;
-        if ((y !== yeta) && (vn < 8)) begin
-          $display("silly: vn = %d, test failed: %b, expected %b", vn, y, yeta);
-          $finish;
-        end
+        u.check(vn, y, yeta);
         vn = vn + 1;
       end
       $display("Silly: all %d tests passed!", vn);
@@ -30,7 +48,8 @@ module xorfour_check(input logic clk);
   logic [4:0] testvectors[15:0];
   integer vn;
 
-  xorfour xf(a, y);
+  xorfour dut(a, y);
+  util#(0) u();
 
   initial
     begin
@@ -47,20 +66,15 @@ module xorfour_check(input logic clk);
   // on negedge check results
   always @(negedge clk)
     begin
-      if (y !== yeta) begin
-        $display("xor4: vn = %d, test failed: %b, expected %b", vn, y, yeta);
-        $finish;
-      end
-
+      u.check(vn, y, yeta);
       if (vn == 16) begin
         $display("Xor4: all %d tests passed!", vn);
-        $finish;
       end
       vn = vn + 1;
     end
 endmodule
 
-module gates_check(input logic clk);
+module gates_check();
   logic [3:0] a, b;
   logic [3:0] yinv, yand, yor, yxor, ynand, ynor;
   logic [3:0] einv, eand, eor, exor, enand, enor;
@@ -68,21 +82,47 @@ module gates_check(input logic clk);
   integer vn;
 
   gates dut(a, b, yinv, yand, yor, yxor, ynand, ynor);
+  util#(3) u();
 
   initial
     begin
       $readmemb("gatevectors.txt", testvectors);
       vn = 0;
-      repeat(8) begin
+      repeat(256) begin
         {a, b, einv, eand, eor, exor, enand, enor} = testvectors[vn];
         #10;
-        if (yinv !== einv) begin
-          $display("gates: vn = %d, test failed: %b, expected %b", vn, yinv, einv);
-          $finish;
-        end
+        u.check(vn, yinv, einv);
+        u.check(vn, yand, eand);
+        u.check(vn, yor, eor);
+        u.check(vn, yxor, exor);
+        u.check(vn, ynand, enand);
+        u.check(vn, ynor, enor);
         vn = vn + 1;
       end
       $display("Gates: all %d tests passed!", vn);
+    end
+endmodule
+
+module and8_check();
+  logic [7:0] a; 
+  logic y, yeta;
+  logic [8:0] testvectors[255:0];
+  integer vn;
+
+  and8 dut(a, y);
+  util#(0) u();
+
+  initial
+    begin
+      $readmemb("and8vectors.txt", testvectors);
+      vn = 0;
+      repeat(256) begin
+        {a[7:0], yeta} = testvectors[vn];
+        #10;
+        u.check(vn, y, yeta);
+        vn = vn + 1;
+      end
+      $display("And8: all %d tests passed!", vn);
     end
 endmodule
 
@@ -97,6 +137,13 @@ module comb_testbench();
 
   silllyfunction_check sc();
   xorfour_check xc(clk);
-  gates_check gc(clk);
+  and8_check a8c();
+  gates_check gc();
 
+  // finish on max counter
+  initial
+    begin
+      #10000;
+      $finish;
+    end
 endmodule

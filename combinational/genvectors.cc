@@ -16,6 +16,12 @@ template <typename T> auto xor4gen(T bset) {
   return make_result(std::bitset<1>(y & 1));
 };
 
+template <typename T> auto and8gen(T bset) {
+  unsigned a = bset.count();
+  unsigned y = (a == 8);
+  return make_result(std::bitset<1>(y & 1));
+};
+
 template <typename T> auto gatesgen(T bset) {
   auto a = std::bitset<4>(bset.to_ulong() >> 4);
   auto b = std::bitset<4>(bset.to_ulong());
@@ -36,5 +42,6 @@ template <typename F> auto gentry(std::string_view nm, int n, F functor) {
 int main() {
   gentry("sillyvectors.txt", 3, [](auto bset) { return sillygen(bset); });
   gentry("xor4vectors.txt", 4, [](auto bset) { return xor4gen(bset); });
+  gentry("and8vectors.txt", 8, [](auto bset) { return and8gen(bset); });
   gentry("gatevectors.txt", 8, [](auto bset) { return gatesgen(bset); });
 }
