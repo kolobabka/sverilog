@@ -126,6 +126,31 @@ module and8_check();
     end
 endmodule
 
+// ad-hoc testbench part for muxes
+// TODO: probably checking different s's will be good idea
+// TODO: wow, it fails (!)
+module mux4_check();
+  logic[3:0] d0 = 4'b0, d1 = 4'b0101, d2 = 4'b1010, d3 = 4'b1;
+  logic[3:0] y, ys, yss;
+  logic[1:0] s;
+
+  mux4 dut(d0, d1, d2, d3, s, y);
+  mux4s duts(d0, d1, d2, d3, s, ys);
+  mux4ss dutss(d0, d1, d2, d3, s, yss);
+
+  initial
+    begin
+      s = 2'b00;
+      #10;
+      if ((y !== ys) || (y !== yss)) begin
+        $display("mux test failed: %b, %b, %b", y, ys, yss);
+        // $finish;
+      end
+      $display("mux: all tests passed!");
+    end
+endmodule
+
+
 module comb_testbench();
   logic clk;
 
@@ -139,6 +164,7 @@ module comb_testbench();
   xorfour_check xc(clk);
   and8_check a8c();
   gates_check gc();
+  mux4_check mc();
 
   // finish on max counter
   initial

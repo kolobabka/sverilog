@@ -3,9 +3,8 @@ COMPILER := verilator
 FILELIST = filelist_silly 
 SIMV = silly
 SRC = sillyfunction.sv \
-      xorfour.sv \
-      and8.sv \
       gates.sv \
+      muxes.sv \
       comb_testbench.sv
 VECTORS = sillyvectors.txt \
           xor4vectors.txt \
