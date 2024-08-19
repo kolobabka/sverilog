@@ -2,8 +2,10 @@ COMPILER := verilator
 
 FILELIST = filelist_rmc 
 SIMV = rmc
-SRC = readmem_check.sv
-OPTS = -cc --build --main --exe $(SRC) -o $(SIMV)
+SRC = readmem_check.sv \
+      randomize.sv \
+      top.sv
+OPTS = -cc --timing --build --main --exe $(SRC) -o $(SIMV)
 
 .PHONY: all
 all: run

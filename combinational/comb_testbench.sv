@@ -58,13 +58,13 @@ module xorfour_check(input logic clk);
     end
 
   // on posedge load test vector and wires
-  always @(posedge clk)
+  always_ff @(posedge clk)
     begin
       {a[3:0], yeta} = testvectors[vn];
     end
 
   // on negedge check results
-  always @(negedge clk)
+  always_ff @(negedge clk)
     begin
       u.check(vn, y, yeta);
       if (vn == 16) begin
