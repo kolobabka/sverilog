@@ -9,6 +9,7 @@ module readmem_check;
   integer i;
   initial
     begin
+      $display("read mem tests");
       $readmemb("sillyvectors.txt", data);
       for (i = 0; i < 10; i = i + 1)
         $display("%d: %b", i, data[i]);

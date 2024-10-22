@@ -1,7 +1,7 @@
 # test vector copy
 ADD_CUSTOM_TARGET(copy_vectors_rmc
   COMMAND ${CMAKE_COMMAND} -E copy
-    ${CMAKE_CURRENT_SOURCE_DIR}/sillyvectors.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/sillyvectors.txt ${CMAKE_CURRENT_SOURCE_DIR}/switch.txt
     ${CMAKE_CURRENT_BINARY_DIR}/
 )
 
@@ -9,6 +9,8 @@ SET(SIMV rmc)
 SET(SRC
   readmem_check.sv
   randomize.sv
+  forloop.sv
+  dynarr.sv
   top.sv
 )
 
