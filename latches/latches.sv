@@ -22,12 +22,12 @@ endmodule
 
 // less naive sr-latch with latch logic
 module sr_latch(input logic S, R, output logic Q, Q_not);
-  always_latch @(R or S)
+  always_latch @(R, S, Q, Q_not)
     begin
-      if (R)
-        Q = 0;
-      else if (S)
-        Q = 1;
-      Q_not = ~Q;
+      if (R | S)
+        begin
+          Q <= ~(R | Q_not);
+          Q_not <= ~(S | Q);
+        end
     end
 endmodule

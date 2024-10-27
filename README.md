@@ -8,10 +8,11 @@ Build line:
 
     cmake -DCMAKE_BUILD_TYPE=Release -S . -B build && cmake --build ./build
 
-Contents:
+Contents (in order of teaching):
 
-* util -- some handy utils, like result checker
 * rmc -- simple tests with system verilog, like readmemb
+* util -- some handy utils, like result checker
 * combinational -- different comb logic examples and testbench
-* muxes -- multiplexors and program-atic testbench
+* muxes -- experiments with multiplexors
+* latches -- experiments with latches
 
