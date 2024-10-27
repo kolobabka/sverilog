@@ -1,3 +1,9 @@
+//-----------------------------------------------------------------------------
+//
+// Experiments with multiplexors, behavioral and structural design
+//
+//-----------------------------------------------------------------------------
+
 // Harris and Harris example 4.5
 module mux2(input logic[3:0] d0, d1,
             input logic s,

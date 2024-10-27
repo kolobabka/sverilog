@@ -9,6 +9,7 @@ module top;
   randomize rnd();
   forloop_check frl();
   dynarr_check dac();
+  alwayscomb ac();
 
   // finish on max counter
   initial

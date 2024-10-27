@@ -14,5 +14,6 @@ ADD_CUSTOM_TARGET(build-all ALL)
 
 add_subdirectory(combinational)
 add_subdirectory(muxes)
+add_subdirectory(latches)
 add_subdirectory(rmc)
 

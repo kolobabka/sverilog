@@ -16,6 +16,7 @@ module dynarr_check;
 
   initial
     begin
+      $display("-- dynarr check --");
       d1 = new[5];
       foreach(d1[j])
         d1[j] = j;

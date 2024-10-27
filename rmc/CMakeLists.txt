@@ -11,6 +11,7 @@ SET(SRC
   ${CMAKE_CURRENT_SOURCE_DIR}/randomize.sv
   ${CMAKE_CURRENT_SOURCE_DIR}/forloop.sv
   ${CMAKE_CURRENT_SOURCE_DIR}/dynarr.sv
+  ${CMAKE_CURRENT_SOURCE_DIR}/alwayscomb.sv
   ${CMAKE_CURRENT_SOURCE_DIR}/top.sv
 )
 

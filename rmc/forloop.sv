@@ -11,6 +11,7 @@ module forloop_check;
 
   initial
     begin
+      $display("-- for loop check --");
       // displays 101, 1, 10.
       $display("src5: %b, %b, %b", src[0], src[0][0], src[0][2:1]);
 
