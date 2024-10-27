@@ -6,18 +6,6 @@
 //
 //-----------------------------------------------------------------------------
 
-// the only way I found to make generic function
-// is to make generic module and function inside it
-module util#(parameter int W = 3)();
-  // check function for tests
-  function void check(integer vn, logic [W:0] y, logic [W:0] yeta);
-    if (y !== yeta) begin
-      $display("vn = %d, test failed: %b, expected %b", vn, y, yeta);
-      $finish;
-    end
-  endfunction
-endmodule
-
 // first approach to testbench: repeat with #10 wait
 module silllyfunction_check();
   logic a, b, c, y, yeta;
@@ -126,33 +114,6 @@ module and8_check();
     end
 endmodule
 
-// ad-hoc testbench part for muxes
-module mux4_check();
-  logic[3:0] d0 = 4'h0, d1 = 4'h1, d2 = 4'h2, d3 = 4'h3;
-  logic[3:0] y, ys, yss;
-  logic[1:0] s;
-  integer vn;
-
-  mux4 dut(d0, d1, d2, d3, s, y);
-  mux4s duts(d0, d1, d2, d3, s, ys);
-  mux4ss dutss(d0, d1, d2, d3, s, yss);
-
-  util#(3) u();
-
-  initial
-    begin
-      vn = 0;
-      repeat(4) begin
-        s = 2'(vn & 'h3); // 00, 01, 10, 11
-        #10
-        u.check(vn, y, ys);
-        u.check(vn, y, yss);
-        vn = vn + 1;
-      end
-      $display("mux: all %d tests passed!", vn);
-    end
-endmodule
-
 module comb_testbench();
   logic clk;
 
@@ -166,7 +127,6 @@ module comb_testbench();
   xorfour_check xc(clk);
   and8_check a8c();
   gates_check gc();
-  mux4_check mc();
 
   // finish on max counter
   initial

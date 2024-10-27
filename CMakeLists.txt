@@ -13,5 +13,6 @@ SET(OPTS
 ADD_CUSTOM_TARGET(build-all ALL)
 
 add_subdirectory(combinational)
+add_subdirectory(muxes)
 add_subdirectory(rmc)
 

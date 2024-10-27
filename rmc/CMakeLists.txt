@@ -7,11 +7,11 @@ ADD_CUSTOM_TARGET(copy_vectors_rmc
 
 SET(SIMV rmc)
 SET(SRC
-  readmem_check.sv
-  randomize.sv
-  forloop.sv
-  dynarr.sv
-  top.sv
+  ${CMAKE_CURRENT_SOURCE_DIR}/readmem_check.sv
+  ${CMAKE_CURRENT_SOURCE_DIR}/randomize.sv
+  ${CMAKE_CURRENT_SOURCE_DIR}/forloop.sv
+  ${CMAKE_CURRENT_SOURCE_DIR}/dynarr.sv
+  ${CMAKE_CURRENT_SOURCE_DIR}/top.sv
 )
 
 # build sv files to testbench + dut

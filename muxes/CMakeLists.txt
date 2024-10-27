@@ -1,21 +1,8 @@
-SET(GSRC genvectors.cc)
-SET(GEN vgen)
-
-# test vector generator (C++ sources)
-ADD_EXECUTABLE(${GEN} ${GSRC})
-
-# test generator run
-ADD_CUSTOM_TARGET(vectors_${GEN}
-  COMMAND ${GEN}
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-  DEPENDS ${GEN})
-
-SET(SIMV combinatorial)
+SET(SIMV muxes)
 SET(SRC
   ${CMAKE_SOURCE_DIR}/util/util.sv
-  ${CMAKE_CURRENT_SOURCE_DIR}/sillyfunction.sv
-  ${CMAKE_CURRENT_SOURCE_DIR}/gates.sv
-  ${CMAKE_CURRENT_SOURCE_DIR}/comb_testbench.sv
+  ${CMAKE_CURRENT_SOURCE_DIR}/muxes.sv
+  ${CMAKE_CURRENT_SOURCE_DIR}/muxes_testbench.sv
 )
 
 # build sv files to testbench + dut
@@ -30,8 +17,6 @@ ADD_CUSTOM_TARGET(runsim_${SIMV}
   COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${SIMV}
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
   DEPENDS ${SIMV})
-ADD_DEPENDENCIES(runsim_${SIMV} vectors_${GEN})
 
 # mandatory
 ADD_DEPENDENCIES(build-all runsim_${SIMV})
-
