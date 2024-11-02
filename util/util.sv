@@ -28,4 +28,12 @@ program automatic util#(parameter int W = 3)();
       $finish;
     end
   endfunction
+
+  function void nscheck(string s, integer vn, logic [W:0] y, logic [W:0] yeta);
+    if (y !== yeta) begin
+      $display("vn = %d, %s test failed: %b, expected %b", vn, s, y, yeta);
+      $finish;
+    end
+  endfunction
+
 endprogram
