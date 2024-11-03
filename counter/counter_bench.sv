@@ -6,17 +6,16 @@
 
 program automatic test_counter(input logic Clock, output logic Reset, output logic Enable, Load, UpDn, logic [7:0] Data, input logic [7:0] Q);
   clocking cb @(posedge Clock);
+    default input #0 output #0; // skew: input -- #0 -- posedge -- #0 -- output
     output Reset;
     output Enable, Load, UpDn, Data;
     input Q;
   endclocking
 
-  initial begin
-    // outputs drived with delay #0
+  initial begin    
     cb.Enable <= 1; cb.Load <= 0; cb.UpDn <= 1; cb.Reset <= 0;
     @(cb);
-    repeat (3) @(cb);    
-    @(cb);
+    repeat (3) @(cb);
     cb.Reset <= 1;
     @(cb);
     cb.Reset <= 0; cb.UpDn <= 0;
@@ -27,11 +26,11 @@ program automatic test_counter(input logic Clock, output logic Reset, output log
   initial begin
     logic[7:0] Qe = 8'b00000000;
 
-    // inputs sampled with delay #1step
-    repeat (2) @(cb);    
+    // inputs sampled #1 before clock
+    repeat (1) @(cb);    
+    @(cb); Qe = 0; test_counter_top.u.scheck("t1:", cb.Q, Qe);
     repeat (3) begin @(cb); Qe = Qe + 1; test_counter_top.u.scheck("t2:", cb.Q, Qe); end
     @(cb); Qe = 0; test_counter_top.u.scheck("t3:", cb.Q, Qe);
-    @(cb); Qe = 0; test_counter_top.u.scheck("t3a:", cb.Q, Qe);
     repeat (3) begin @(cb); Qe = Qe - 1; test_counter_top.u.scheck("t4:", cb.Q, Qe); end
     repeat (3) begin @(cb); Qe = Qe + 1; test_counter_top.u.scheck("t5:", cb.Q, Qe); end
     $display("All tests passed");

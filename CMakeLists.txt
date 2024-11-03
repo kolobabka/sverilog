@@ -17,4 +17,5 @@ add_subdirectory(muxes)
 add_subdirectory(latches)
 add_subdirectory(rmc)
 add_subdirectory(counter)
+add_subdirectory(ram)
 
