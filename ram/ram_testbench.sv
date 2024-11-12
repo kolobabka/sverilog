@@ -25,18 +25,18 @@ program ram_test(input logic Clock, DataBus.TestR DataInt,
   end
 
   initial begin
-    repeat(10) begin
-      ##1;
-      $display("RWn: %b, Addr: %b, Data: %b", CtrlInt.RWn, DataInt.Addr, DataInt.Data);
-      $display("RAM: %b", TheRAM.mem[1]);
-    end
-    $finish;
+    $monitor("@%d: TheRAM.mem[1] = %b", $time, TheRAM.mem[1]);
   end
 
 endprogram
 
 module ram_top;
   logic clock = 0;
+
+  initial begin
+    #100;
+    $finish;
+  end
 
   always
   begin
