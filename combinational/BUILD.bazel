@@ -1,0 +1,52 @@
+
+load("//:variables.bzl", "ENVVARS")
+
+COMPILER=ENVVARS["COMPILER"]
+OPTS=ENVVARS["OPTS"]
+GSRC=["genvectors.cc", "alltuples.hpp"]
+GEN="vgen"
+SIMV="combinatorial"
+
+cc_binary(
+    name = GEN,
+    srcs = GSRC,
+)
+
+# test generator run
+#ADD_CUSTOM_TARGET(vectors_${GEN}
+#  COMMAND ${GEN}
+#  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+#  DEPENDS ${GEN})
+
+#SET(SIMV combinatorial)
+SRC = ["@//util/util.sv",
+       "sillyfunction.sv",
+       "gates.sv",
+       "comb_testbench.sv"]
+
+genrule(
+  name = SIMV,
+  srcs = SRC,
+  outs = [SIMV],
+  cmd = "{} {} {} --Mdir $(BINDIR) -o {}".format(COMPILER, OPTS, SRC, SIMV)
+)
+
+# build sv files to testbench + dut
+#ADD_CUSTOM_TARGET(${SIMV}
+#  COMMAND ${COMPILER} ${OPTS} ${SRC} --Mdir ${CMAKE_CURRENT_BINARY_DIR} -o ${SIMV}
+#  COMMENT "Compile sv files with ${COMPILER}"
+#  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+#  DEPENDS ${VERILOG_SOURCES})
+
+# run testbench
+#ADD_CUSTOM_TARGET(runsim_${SIMV}
+#  COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${SIMV}
+#  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+#  DEPENDS ${SIMV})
+#ADD_DEPENDENCIES(runsim_${SIMV} vectors_${GEN})
+
+# mandatory
+#ADD_DEPENDENCIES(build-all runsim_${SIMV}) verilator)
+
+
+
